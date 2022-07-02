@@ -1,9 +1,17 @@
 // Imports
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
+const mongoose = require("mongoose");
+const Resources = require("./models/post");
+const bodyParser = require("body-parser");
+const cors = require('cors');
 
 const app = express();
 const port = 4000;
+
+//Middleware
+app.use(bodyParser.json());
+app.use(cors()); //this allows ALL domains to fetch (access) our API with no issues
 
 // Static Files
 app.use(express.static('public'));
@@ -16,7 +24,6 @@ app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
 // Navigation
-
 app.get('/', (req, res) => {
     res.render('index');
 });
@@ -41,6 +48,48 @@ app.get('/:learningExperience', (req, res)=> {
     // Need to use .env file for API key later.
     res.render('learnnearyou', {dynamicsrc})
 });
+
+//First Party API
+app.get("/mathresources", (req, res) => {
+    //get data from mongodb and pass it to view
+    Resources.find({}, function (err, data) {
+      if (err) throw err;
+      res.render("index", { math: data });
+    });
+  });
+  
+  //gets all posts
+  app.get("/resources", async (req, res) => {
+    try {
+      const posts = await Resources.find();
+      res.json(posts);
+    } catch (err) {
+      res.json({ message: err });
+    };
+  });
+  
+  //submits a post
+  app.post("/resources", async (req, res) => {
+    const post = new Resources({
+      title: req.body.title,
+      description: req.body.description,
+      link: req.body.link
+    });
+  
+    try {
+      const savedPost = await post.save();
+      res.json(savedPost);
+    } catch (err) {
+      res.json({ message: err });
+    };
+  });
+
+  //database connection
+  mongoose.connect(
+    "mongodb+srv://hopeuser:hopeuser1@hhdata.ecydj.mongodb.net/?retryWrites=true&w=majority",
+    { useNewUrlParser: true },
+    () => console.log("DB connection successful")
+);
 
 // Listen on Port 5000
 app.listen(port, () => console.info(`App listening on port ${port}`));
