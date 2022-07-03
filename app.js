@@ -8,6 +8,7 @@ const EL = require('./models/el');
 // const Cooking = require('./models/cooking'); in progress
 // const Coding = require('./models/coding'); in progress
 const bodyParser = require('body-parser');
+
 const cors = require('cors');
 
 const app = express();
@@ -21,6 +22,7 @@ mongoose.connect(
 );
 
 // Middleware
+
 app.use(bodyParser.json());
 app.use(cors()); //this allows ALL domains to fetch (access) our API with no issues
 
@@ -38,6 +40,7 @@ app.set('view engine', 'ejs');
 app.get('/mathresources', (req, res) => {
   //get data from mongodb and pass it to view
   Math.find({}, function (err, data) {
+
     if (err) throw err;
     res.render('mathresources', { math: data });
   });
@@ -150,6 +153,7 @@ app.post('/el', async (req, res) => {
 //     res.json({ message: err });
 //   };
 // }); in progress
+
 
 // Navigation
 app.get('/', (req, res) => {
