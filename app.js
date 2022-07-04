@@ -6,6 +6,7 @@ const Math = require("./models/math");
 const Reading = require("./models/reading");
 const Coding = require("./models/coding");
 const Cooking = require("./models/cooking");
+const Science = require("./models/science");
 const bodyParser = require("body-parser");
 const cors = require('cors');
 
@@ -68,10 +69,18 @@ app.get("/englishresources", (req, res) => {
   });
 });
 
-//submits a post
-app.post("/resources", async (req, res) => {
+app.get("/scienceresources", (req, res) => {
+  //get data from mongodb and pass it to view
+  Science.find({}, function (err, data) {
+    if (err) throw err;
+    res.render('scienceresources', { science: data });
+  });
+});
+
+// Post for math data
+app.post("/math", async (req, res) => {
   
-  const post = new Resources({
+  const post = new Math({
     title: req.body.title,
     description: req.body.description,
     link: req.body.link
@@ -104,7 +113,7 @@ app.post("/reading", async (req, res) => {
    
 })
 
-//Post for cooking data
+// Post for cooking data
 app.post("/cooking", async (req, res) => {
   
   const post = new Cooking({
@@ -123,10 +132,28 @@ app.post("/cooking", async (req, res) => {
    
 })
 
-//Post for coding
+// Post for coding
 app.post("/coding", async (req, res) => {
   
   const post = new Coding({
+    title: req.body.title,
+    description: req.body.description,
+    link: req.body.link
+  });
+  
+  try {
+    const savedPost = await post.save();
+    res.json(savedPost);
+  } catch (err) {
+    res.json({ message: err });
+    console.log(err);
+  };
+});
+
+// Post for coding
+app.post("/science", async (req, res) => {
+  
+  const post = new Science({
     title: req.body.title,
     description: req.body.description,
     link: req.body.link
