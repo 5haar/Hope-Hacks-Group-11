@@ -34,12 +34,12 @@
     font-family: 'SpaceMonoRegular', sans-serif;
 }
 
-a {
+.rs-link {
   text-decoration: none;
   color: inherit;
 }
 
-a:hover {
+.rs-link:hover {
   color: #75B9BE;
 }
 
@@ -157,4 +157,10 @@ ul {
 
 .more1{
   padding-top: 80px;
+}
+
+@media only screen and (max-width: 650px){
+  .weblogo {
+      display: none;
+  }
 }
