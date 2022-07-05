@@ -1,4 +1,5 @@
 # Hope-Hacks-Group-11
+![Screen Shot 2022-07-05 at 10 44 04 AM](https://user-images.githubusercontent.com/102987748/177355163-14254898-cc7b-43ce-9aaa-8b54bf7bd4e0.png)
 
 - You should be using a single Github repo for you and your team to work on.
 - Your directories need to be structured and neat. 
